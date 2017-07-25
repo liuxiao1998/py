@@ -1,11 +1,16 @@
 #coding:utf8
 import data,os,time
 with open('./user_agents.txt','r') as uf:
-    ut=[]
+    agents_pool=[]
     for lines in uf:
         if(lines!='\n'):
-            ut+=lines
-res=data.GetPage('http://www.biquzi.com/0_213/',None,ut)
+            agents_pool+=lines
+with open('./ip.txt','r') as fp:
+    ip_pool=[]
+    for sd in fp:
+        ip_pool+=fp
+
+res=data.GetPage('http://www.biquzi.com/0_213/',None,ip_pool,agents_pool)
 name_pat=r'.html">(.*?)</a></dd>'
 link_pat=r'<dd><a href="(.*?)">'
 content_pat=r'&nbsp;&nbsp;&nbsp;&nbsp;(.*?)<br />'
@@ -26,7 +31,7 @@ with open('./%s/%s.txt'%(title,title),'w') as fp:
             if(sec==False):
                 fp.write('%s\n'%namelist[k].decode('gb2312','ignore').encode('utf8','ignore'))
             url='http://www.biquzi.com%s'%linklist[k].decode('gb2312','ignore').encode('utf8','ignore')
-            page=data.GetPage(url,None,ut)
+            page=data.GetPage(url,None,ip_pool,agents_pool)
             conlist=data.FindPat(content_pat,page)
             for lines in conlist:
                 fp.write('    %s\n'%lines.decode('gb2312','ignore').encode('utf8','ignore'))
