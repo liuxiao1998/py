@@ -1,6 +1,11 @@
 #coding:utf8
 import data,os,time
-res=data.GetPage('http://www.biquzi.com/0_213/',None)
+with open('./user_agents.txt','r') as uf:
+    ut=[]
+    for lines in uf:
+        if(lines!='\n'):
+            ut+=lines
+res=data.GetPage('http://www.biquzi.com/0_213/',None,ut)
 name_pat=r'.html">(.*?)</a></dd>'
 link_pat=r'<dd><a href="(.*?)">'
 content_pat=r'&nbsp;&nbsp;&nbsp;&nbsp;(.*?)<br />'
@@ -12,18 +17,24 @@ title=titlelist[0].decode('gb2312','ignore').encode('utf8','ignore')
 print len(namelist),len(linklist)
 k=0
 os.system('mkdir ./%s'%title)
-try:
-    with open('./%s/%s.txt'%(title,title),'w') as fp:
-        fp.write('%s\n'%title)
-        for name in namelist:
-            fp.write('%s\n'%namelist[k].decode('gb2312','ignore').encode('utf8','ignore'))
+
+with open('./%s/%s.txt'%(title,title),'w') as fp:
+    fp.write('%s\n'%title)
+    sec=False
+    for name in namelist:
+        try:
+            if(sec==False):
+                fp.write('%s\n'%namelist[k].decode('gb2312','ignore').encode('utf8','ignore'))
             url='http://www.biquzi.com%s'%linklist[k].decode('gb2312','ignore').encode('utf8','ignore')
-            page=data.GetPage(url,None)
+            page=data.GetPage(url,None,ut)
             conlist=data.FindPat(content_pat,page)
             for lines in conlist:
                 fp.write('    %s\n'%lines.decode('gb2312','ignore').encode('utf8','ignore'))
-            k+=1
-            print '第%d章结束'%(k)
-            fp.write('\n\n\n\n')
-except Exception as e:
-    print e
+            sec=False
+        except Exception as e:
+            print e
+            k-=1
+            sec=True
+        k+=1
+        print '第%d章结束'%(k)
+        fp.write('\n\n\n\n')

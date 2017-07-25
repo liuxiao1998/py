@@ -8,16 +8,13 @@ def FindPat(pat,source):
     namelist=re.findall(rr,source)
     return namelist
 
-def GetPage(url,data):
-    with open('./user_agents.txt','r') as uf:
-        ut=[]
-        for lines in uf:
-            ut+=lines
-        headers = {'User-Agent': '%s'%random.choice(ut)}
-        req = urllib2.Request(url, data, headers)
-        response = urllib2.urlopen(req)
-        page = response.read()
-        return page
+def GetPage(url,data,ut):
+
+    headers = {'User-Agent': '%s'%random.choice(ut)}
+    req = urllib2.Request(url, data, headers)
+    response = urllib2.urlopen(req)
+    page = response.read()
+    return page
 
 def GetPage_Proxy(url,data):
     proxy={'http':'127.0.0.1:8087'}
