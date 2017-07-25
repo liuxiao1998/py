@@ -9,8 +9,8 @@ with open('./ip.txt','r') as fp:
     ip_pool=[]
     for sd in fp:
         ip_pool+=fp
-
-res=data.GetPage('http://www.biquzi.com/0_213/',None,ip_pool,agents_pool)
+url=raw_input('novel link:')
+res=data.GetPage(url,None,ip_pool,agents_pool)
 name_pat=r'.html">(.*?)</a></dd>'
 link_pat=r'<dd><a href="(.*?)">'
 content_pat=r'&nbsp;&nbsp;&nbsp;&nbsp;(.*?)<br />'
@@ -40,6 +40,6 @@ with open('./%s/%s.txt'%(title,title),'w') as fp:
             print e
             k-=1
             sec=True
+        print namelist[k].decode('gb2312','ignore')
         k+=1
-        print '第%d章结束'%(k)
         fp.write('\n\n\n\n')

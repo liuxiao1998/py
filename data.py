@@ -10,7 +10,7 @@ def FindPat(pat,source):
 
 
 def GetPage(url,data,ip_pool,agents_pool):
-    if(ip_pool!=[] and random.randint(0,1)==0):
+    if(ip_pool!=[] and random.randint(0,1)!=0):
         proxy={'http':'%s'%random.choice(ip_pool)}
         proxy_support = urllib2.ProxyHandler(proxy)
         opener = urllib2.build_opener(proxy_support)
