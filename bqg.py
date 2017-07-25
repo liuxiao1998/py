@@ -26,7 +26,7 @@ os.system('mkdir ./%s'%title)
 with open('./%s/%s.txt'%(title,title),'w') as fp:
     fp.write('%s\n'%title)
     sec=False
-    for name in namelist:
+    for k in range(0,len(namelist)):
         try:
             if(sec==False):
                 fp.write('%s\n'%namelist[k].decode('gb2312','ignore').encode('utf8','ignore'))
